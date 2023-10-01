@@ -16,11 +16,15 @@
 import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'IndexPage',
-  async setup() {
-    await this.fetchRegions();
-  },
   computed: {
     ...mapGetters(['getRegions'])
+  },
+  mounted() {
+    const fetchData = async () => {
+      await this.fetchRegions();
+    }
+
+    fetchData();
   },
   methods: {
     ...mapActions(['fetchRegions'])

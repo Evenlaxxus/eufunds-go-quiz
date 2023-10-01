@@ -1,29 +1,24 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
-        <v-row>
-          Wybierz województwo
-        </v-row>
-        <v-row
-          v-for="(region, index) in getRegions"
-          :key="index"
-          @click="setRegion(region)"
-        >
-          {{ region.name }}
-        </v-row>
+      <v-col cols="12" md="6">
+        <v-select
+          v-model="selectedRegion"
+          placeholder="Wybierz województwo"
+          :items="getRegions"
+          item-text="name"
+        ></v-select>
       </v-col>
-      <v-col>
-        <v-row>
-          Wybierz powiat
-        </v-row>
-        <v-row
-          v-for="(county, index) in getCounties"
-          :key="index"
-          @click="setCounty(county)"
-        >
-          {{ county }}
-        </v-row>
+      <v-col
+        v-if="selectedRegion"
+        cols="12"
+        md="6"
+      >
+        <v-select
+          v-model="selectedCounty"
+          placeholder="Wybierz powiat"
+          :items="getCounties(selectedRegion)"
+        ></v-select>
       </v-col>
     </v-row>
   </v-container>
@@ -40,13 +35,11 @@ export default {
   computed: {
     ...mapGetters(['getRegions', 'getCounties'])
   },
-  methods: {
-    setRegion(region) {
-      this.selectedRegion = region;
-    },
-
-    setCounty(county) {
-      this.selectedCounty = county;
+  watch: {
+    selectedCounty(value) {
+      if (value) {
+        this.$router.push('/' + value);
+      }
     }
   }
 }

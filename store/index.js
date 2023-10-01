@@ -1,4 +1,5 @@
 import axios from "axios";
+import {regions} from "assets/regions";
 
 const apiUrl = '';
 export const state = () => ({
@@ -15,8 +16,11 @@ export const getters = {
     return state.regions;
   },
 
-  getCounties(state, regionName) {
-    return state.regions.find(region => region.name === regionName)?.items | [];
+  getCounties: (state) => (regionName) => {
+    if (regionName === 'Cały Kraj') {
+      return [...state.regions.reduce((acc, currentValue) => [...acc, ...currentValue.items], [])].sort((a, b) => a.localeCompare(b));
+    }
+    return [...state.regions.find(region => region.name === regionName)?.items].sort((a, b) => a.localeCompare(b)) || [];
   }
 }
 
@@ -26,7 +30,15 @@ export const mutations = {
   },
 
   setRegions(state, value) {
-    state.questions = value;
+    state.regions = value.sort(function (a, b) {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
   }
 }
 
@@ -36,17 +48,6 @@ export const actions = {
   },
 
   async fetchRegions({ commit }) {
-    return await axios.get(apiUrl + '/regions').then(res => commit('setRegions',
-      [
-        {
-          name: 'region1',
-          items: ['county11', 'county12']
-        },
-        {
-          name: 'region2',
-          items: ['county21', 'county22']
-        }
-      ]
-    ));
+    return await axios.get(apiUrl + '/regions').then(res => commit('setRegions', regions));
   }
 }
