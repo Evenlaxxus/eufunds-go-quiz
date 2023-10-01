@@ -37,7 +37,8 @@ export default {
     submitQuestion(answer) {
       this.addAnswer({
         question: this.displayedQuestion.question,
-        answer: answer.id
+        answer: answer.id,
+        answerText: answer.answer
       });
 
       setTimeout(() => {
