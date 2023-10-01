@@ -1,10 +1,11 @@
 import axios from "axios";
-import {regions} from "assets/regions";
+import {allRegions} from "assets/regions";
 
-const apiUrl = '';
+const apiUrl = 'http://10.250.162.184:8000';
 export const state = () => ({
   questions: [],
-  regions: []
+  regions: allRegions,
+  answers: []
 })
 
 export const getters = {
@@ -14,6 +15,10 @@ export const getters = {
 
   getRegions(state) {
     return state.regions;
+  },
+
+  getAnswers(state) {
+    return state.answers;
   },
 
   getCounties: (state) => (regionName) => {
@@ -39,15 +44,33 @@ export const mutations = {
       }
       return 0;
     });
+  },
+
+  addAnswer(state, answer) {
+    state.answers.push(answer);
   }
 }
 
 export const actions = {
-  async fetchQuestions({ commit }, county) {
-    return await axios.get(apiUrl + '/' + county).then(res => commit('setQuestions', res.data));
+  async fetchQuestions({state, commit}, county) {
+    const regionName = state.regions.find(region => region.items.includes(county)).name;
+    return await axios.get(apiUrl + '/questions',
+      {
+        params: {
+          region: regionName,
+          powiat: county
+      }
+    }).then(res => commit('setQuestions', res.data))
+      .catch(e => console.log(e));
   },
 
-  async fetchRegions({ commit }) {
-    return await axios.get(apiUrl + '/regions').then(res => commit('setRegions', regions));
+  async fetchRegions({commit}) {
+    return await axios.get(apiUrl + '/regions')
+      .then(res => commit('setRegions', allRegions))
+      .catch(e => console.log(e))
+  },
+
+  addAnswer({ commit }, answer) {
+    commit('addAnswer', answer);
   }
 }

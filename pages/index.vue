@@ -13,21 +13,12 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 export default {
   name: 'IndexPage',
+
   computed: {
     ...mapGetters(['getRegions'])
   },
-  mounted() {
-    const fetchData = async () => {
-      await this.fetchRegions();
-    }
-
-    fetchData();
-  },
-  methods: {
-    ...mapActions(['fetchRegions'])
-  }
 }
 </script>

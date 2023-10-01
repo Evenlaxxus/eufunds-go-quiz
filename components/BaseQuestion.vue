@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center" class="mb-2">
-      {{ question.name }}
+      {{ question.question }}
     </v-row>
     <v-row justify="center" align="center">
       <v-col
@@ -12,7 +12,7 @@
         class="d-flex justify-center elevation-10 ma-2"
         @click="selectAnswer(answer)"
       >
-        {{ answer }}
+        {{ answer.answer }}
       </v-col>
     </v-row>
   </v-container>
