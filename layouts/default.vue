@@ -19,19 +19,19 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Hello there',
           to: '/',
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
-        },
+          icon: 'mdi-apps',
+          title: 'Questions',
+          to: '/:county',
+        }
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js',
+      title: 'EU funds quiz',
     }
   },
 }
